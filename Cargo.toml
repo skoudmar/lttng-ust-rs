@@ -1,0 +1,6 @@
+[workspace]
+members = [
+    "lttng-ust",
+    "lttng-ust-generate",
+    "lttng-ust-logging",
+]

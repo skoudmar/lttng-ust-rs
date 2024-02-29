@@ -252,8 +252,8 @@ impl LogLevel {
 #[derive(Copy,Clone,PartialEq,Eq,Debug)]
 #[allow(missing_docs)]
 pub enum CIntegerType {
-    I8, I16, I32, I64,
-    U8, U16, U32, U64,
+    I8, I16, I32, I64, ISize,
+    U8, U16, U32, U64, USize,
 }
 
 impl CIntegerType {
@@ -267,7 +267,9 @@ impl CIntegerType {
             CIntegerType::I32 =>  "int32_t",
             CIntegerType::U32 => "uint32_t",
             CIntegerType::I64 =>  "int64_t",
-            CIntegerType::U64 => "uint64_t"
+            CIntegerType::U64 => "uint64_t",
+            CIntegerType::ISize => "intptr_t",
+            CIntegerType::USize => "uintptr_t",
         }
     }
 
@@ -281,7 +283,9 @@ impl CIntegerType {
             CIntegerType::I32 =>  "const int32_t *",
             CIntegerType::U32 => "const uint32_t *",
             CIntegerType::I64 =>  "const int64_t *",
-            CIntegerType::U64 => "const uint64_t *"
+            CIntegerType::U64 => "const uint64_t *",
+            CIntegerType::ISize => "const intptr_t *",
+            CIntegerType::USize => "const uintptr_t *",
         }
     }
 
@@ -296,6 +300,8 @@ impl CIntegerType {
             CIntegerType::U32 => "u32",
             CIntegerType::I64 => "i64",
             CIntegerType::U64 => "u64",
+            CIntegerType::ISize => "isize",
+            CIntegerType::USize => "usize",
         }
     }
 }

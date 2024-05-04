@@ -22,7 +22,7 @@ fn write_include<F: Write>(outf: &mut F, raw_bindings_path: &PathBuf) -> io::Res
     write!(outf, "#[allow(non_camel_case_types)]\n")?;
     write!(outf, "#[allow(non_snake_case)]\n")?;
     write!(outf, "mod detail {{\n")?;
-    write!(outf, "    include!(\"{}\");\n", raw_bindings_path.to_string_lossy())?;
+    io::copy(&mut File::open(raw_bindings_path)?, outf)?;
     write!(outf, "}}\n")?;
 
     Ok(())

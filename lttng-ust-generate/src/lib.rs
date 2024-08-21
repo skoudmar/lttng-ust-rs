@@ -191,6 +191,37 @@ impl EventInstance {
     }
 }
 
+/// Helper macro to create multiple tracepoints at once.
+///
+/// This macro internally creates a new [`EventClass`] for each tracepoint and adds all fields to it.
+///
+/// # Example
+///
+/// ```rust
+/// use lttng_ust_generate::{Provider, CTFType, CIntegerType, create_tracepoints};
+///
+/// let mut provider = Provider::new("my_first_rust_provider");
+/// create_tracepoints!(
+///     in provider {
+///         fn my_first_tracepoint(arg1: CTFType::Integer(CIntegerType::USize), slice: CTFType::Sequence(CIntegerType::I32));
+///         fn my_second_tracepoint(integer: CTFType::Integer(CIntegerType::I16), string: CTFType::SequenceText);
+///     }
+/// );
+/// ```
+///
+#[macro_export]
+macro_rules! create_tracepoints {
+    (in $provider:ident {$(fn $name:ident($($arg_name:ident: $arg_lttng_type:expr),* $(,)?);)+}) => {
+        $(
+            $provider.create_class(concat!(stringify!($name), "_class"))
+                $(
+                    .add_field(stringify!($arg_name), $arg_lttng_type)
+                )*
+            .instantiate(stringify!($name));
+        )+
+    };
+}
+
 /// Represents the log level for a given tracepoint
 pub enum LogLevel {
     /// Corresponds to the `TRACE_EMERG` log level
